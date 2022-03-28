@@ -1,7 +1,7 @@
-import Page from "../UX/Page/Page"
-import Input from "../UX/Forms/Input"
-import { PrimaryButton, SecondaryButton } from "../UX/Forms/Button";
-const Signin = (
+import Page from "../../UX/Page/Page"
+import Input from "../../UX/Forms/Input"
+import { PrimaryButton, SecondaryButton } from "../../UX/Forms/Button";
+const Login = (
     {
         txtCorreoValue, 
         txtPasswordValue, 
@@ -11,7 +11,7 @@ const Signin = (
         onConfirmClick,
         onCancelClick}) =>{
     return (
-        <Page header={(<h1>Crear Cuenta</h1>)}>
+        <Page header={(<h1>&nbsp;Iniciar Sesión</h1>)}>
             <section>
                 <Input        
                     label = "Correo Electronico"
@@ -35,7 +35,7 @@ const Signin = (
                 />
 
                 <PrimaryButton onClick = {onConfirmClick}>
-                    Crear Cuenta
+                    Iniciar Sesión
                 </PrimaryButton>
                 <SecondaryButton onClick ={onCancelClick}>
                     Tengo Cuenta
@@ -48,4 +48,4 @@ const Signin = (
     )
 }
 
-export default Signin;
+export default Login;

@@ -1,8 +1,11 @@
-import Signin from "./Signin";
+import Login from "./Login";
 import { useState } from "react";
-import { publicAxios } from "../../Lib/apiClient";
-
-const SigninPage = () =>{
+import { useDispatch,useSelector} from "react-redux";
+import { publicAxios } from "../../../Lib/apiClient";
+import Loading from '../../UX/Loading/Loading'
+const LoginPage = () =>{
+    const {isLoading,errors} = useSelector((state)=>{return state.security})
+    const dispatch = useDispatch();
     const [txtCorreo,setTxtCorreo] = useState("");
     const [txtPassword,setTxtPassword] = useState("");
 
@@ -21,16 +24,31 @@ const SigninPage = () =>{
         e.preventDefault();
         e.stopPropagation();
         try {
+            dispatch({
+                type:'ON_LOGIN_LOADING',
+                payload:{}
+            })
             const data = await publicAxios.post(
-                '/api/v1/seguridad/signin',
+                '/api/v1/seguridad/login',
                 {
                     email:txtCorreo,
                     password:txtPassword
                 }
             );
-            console.log("signin Request: ",data)                
+            console.log("Login Request: ",data)
+            const {jwt:jwtToken,user} = data.data;
+            dispatch({
+                type:'ON_LOGIN_SUCCESS',
+                payload:{
+                    jwtToken,...user
+                }
+            })
         } catch (error) {
             console.log("Error on SignIn submit: ",error);
+            dispatch({
+                type:"ON_LOGIN_ERROR",
+                payload:{errors:['Credenciales Incorrectas! ']}
+            })
         }
     }
     const onCancel = (e)=>{
@@ -41,7 +59,8 @@ const SigninPage = () =>{
 
     return(
         <>
-            <Signin
+            {isLoading && <Loading/>}
+            <Login
                 txtCorreoValue={txtCorreo}
                 txtPasswordValue ={txtPassword}
                 onChange ={onChangeHandler}
@@ -57,4 +76,4 @@ const SigninPage = () =>{
     )
 }
 
-export default SigninPage
+export default LoginPage;
